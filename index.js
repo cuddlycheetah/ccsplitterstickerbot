@@ -1,8 +1,8 @@
 const fs = require('fs')
 const TelegramBot = require('node-telegram-bot-api')
-const gm = require('gm').subClass({imageMagick: true})
+const gm = require('gm').subClass({ imageMagick: true })
 
-const BotToken = fs.readFileSync('./bottoken.txt')
+const BotToken = fs.readFileSync('./bottoken.txt').toString().trim()
 const bot = new TelegramBot(BotToken, { polling: true })
 
 const $TEXT_Help = `Hello, Blabla Test 1234  W.I.P`
@@ -44,6 +44,7 @@ const doJob = async (chatId, fileId, fileInfo) => {
         console.log('uploading files', stickerPack);
         for (let tileFile of tileFiles) {
             await bot.addStickerToSet(chatId, packName, fs.readFileSync(tileFile), '🖼')
+            fs.unlinkSync(tileFile)
         }
 
         console.log(stickerPack)
