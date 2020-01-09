@@ -25,6 +25,7 @@ const doJob = async (chatId, fileId, fileInfo) => {
         imInput = await fs.readFileSync(imInput)
         let W = 2048 + 512, H = 2048 + 512
         // if (fileInfo.height > fileInfo.width)
+        await bot.sendChatAction(chatId, 'upload_document')
         let tileFiles = await new Promise((res, rej) => {
             gm(imInput)
             .out('-resize', `${ W }x${ H }!`)
@@ -45,6 +46,7 @@ const doJob = async (chatId, fileId, fileInfo) => {
         for (let tileFile of tileFiles) {
             await bot.addStickerToSet(chatId, packName, fs.readFileSync(tileFile), '🖼')
             fs.unlinkSync(tileFile)
+            await bot.sendChatAction(chatId, 'upload_document')
         }
 
         console.log(stickerPack)
